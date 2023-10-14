@@ -15,6 +15,16 @@ PYBIND11_MODULE(unitree_arm_interface, m) {
     .export_values()
     ;
 
+  py::enum_<MotorError>(m, "MotorError")
+    .value("disconnection", MotorError::disconnection)
+    .value("phase_current_large", MotorError::phase_current_large)
+    .value("phase_leakage", MotorError::phase_leakage)
+    .value("over_temperature", MotorError::over_temperature)
+    .value("wind_overheat", MotorError::wind_overheat)
+    .value("parameters_jumped", MotorError::parameters_jumped)
+    .export_values()
+    ;
+
   py::enum_<ArmMode>(m, "ArmMode")
     .value("Invalid", ArmMode::Invalid)
     .value("Passive", ArmMode::Passive)
@@ -49,6 +59,7 @@ PYBIND11_MODULE(unitree_arm_interface, m) {
 
   py::class_<ArmCmd>(m, "ArmCmd")
     .def(py::init<>())
+    .def_readwrite("version", &ArmCmd::version)
     .def_readwrite("mode", &ArmCmd::mode)
     .def_readwrite("mass_ee", &ArmCmd::mass_ee)
     .def_readwrite("com_ee", &ArmCmd::com_ee)
@@ -75,6 +86,7 @@ PYBIND11_MODULE(unitree_arm_interface, m) {
 
   py::class_<ArmState>(m, "ArmState")
     .def(py::init<>())
+    .def_readwrite("version", &ArmState::version)
     .def_readwrite("mode", &ArmState::mode)
     .def_readwrite("gripperState", &ArmState::gripperState)
     .def_readwrite("gripperCmd", &ArmState::gripperCmd)
